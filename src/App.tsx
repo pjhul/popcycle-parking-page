@@ -1,8 +1,11 @@
 import React from "react";
+import Cube from "./Cube";
 
 const App: React.FC<unknown> = () => {
   return (
-    <div>App</div>
+    <div>
+      <Cube />
+    </div>
   );
 }
 

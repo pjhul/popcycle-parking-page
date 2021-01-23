@@ -8,7 +8,8 @@
   "private": true,
   "scripts": {
     "build": "webpack --mode production",
-    "build:dev": "webpack --mode development"
+    "build:dev": "webpack --mode development",
+    "build:watch": "webpack -w --mode development"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
