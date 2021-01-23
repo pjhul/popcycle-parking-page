@@ -1,0 +1,12 @@
+{
+  "name": "popcycle-parking-page",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:pjhultgren/popcycle-parking-page.git",
+  "author": "Paul Hultgren <pjhultgren5@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^4.1.3"
+  }
+}
