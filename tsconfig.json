@@ -3,7 +3,6 @@
     "target": "es5",
     "module": "es6",
     "allowJs": true,
-    "checkJs": true,
     "jsx": "react-jsx",
     "declaration": false,
     "outDir": "./dist",
