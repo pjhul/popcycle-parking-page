@@ -6,6 +6,7 @@
   "author": "Paul Hultgren <pjhultgren5@gmail.com>",
   "license": "MIT",
   "private": true,
+  "homepage": "www.popcycle.shop",
   "scripts": {
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
