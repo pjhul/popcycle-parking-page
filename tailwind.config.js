@@ -1,12 +1,18 @@
 module.exports = {
   purge: [],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: false,
   theme: {
     fontFamily: {
       "display": ["Rubik"],
       "body": ["Rubik"],
     },
-    extend: {},
+    extend: {
+      colors: {
+        purple: {
+          DEFAULT: "#27187e",
+        }
+      }
+    },
   },
   variants: {
     extend: {},

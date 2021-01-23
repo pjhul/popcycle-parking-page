@@ -38,7 +38,7 @@ const Cube: React.FC<CubeProps> = (props) => {
       });
       renderer.setSize(canvasWidth, canvasHeight);
 
-      // Overwrite THREE automatically setting these to static values of the
+      // Overwrite THREE automatically setting these to the static values of the
       // canvas dimensions
       canvas.current.style.width = "";
       canvas.current.style.height = "";

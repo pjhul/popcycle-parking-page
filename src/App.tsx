@@ -10,12 +10,13 @@ const App: React.FC<unknown> = () => {
         <Info />
       </div>
 
-      <div className="w-5/12 flex items-center flex-shrink-0">
+      <div className="w-1/2 flex items-center justify-center flex-shrink-0">
         <Cube
-          canvasWidth={700}
-          canvasHeight={700}
+          canvasWidth={800}
+          canvasHeight={800}
         />
       </div>
+
     </div>
   );
 }
