@@ -3,7 +3,7 @@ import Cube from "./Cube";
 
 const App: React.FC<unknown> = () => {
   return (
-    <div>
+    <div className="flex">
       <Cube />
     </div>
   );
