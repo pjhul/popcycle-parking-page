@@ -3,10 +3,11 @@
 const path = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = function (env) {
   return {
-    entry: "./src/index.tsx",
+    entry: path.resolve(__dirname, "./src/index.tsx"),
     module: {
       rules: [
         {
@@ -17,6 +18,21 @@ module.exports = function (env) {
           ],
           exclude: /node_modules/,
         },
+        {
+          test: /\.s[ac]ss$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: "css-loader",
+              options: {
+                importLoaders: 1,
+              },
+            },
+            "postcss-loader",
+            "sass-loader",
+          ],
+          sideEffects: true,
+        }
       ],
     },
     plugins: [
@@ -24,7 +40,10 @@ module.exports = function (env) {
         inject: true,
         template: path.resolve(__dirname, "public/index.html"),
         favicon: "./public/favicon.png"
-      })
+      }),
+      new MiniCssExtractPlugin({
+        filename: "main.css",
+      }),
     ],
     resolve: {
       extensions: [ ".tsx", ".ts", ".js" ],
