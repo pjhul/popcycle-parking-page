@@ -25,36 +25,44 @@ const Cube: React.FC<CubeProps> = (props) => {
     canvasHeight,
   } = props;
 
-  const cubeMount = React.useRef<HTMLDivElement>(null);
+  const canvas = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {
-    if(isWebGLAvailable() && cubeMount.current) {
+    if(isWebGLAvailable() && canvas.current) {
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xffffff);
 
-      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 1000 );
       const renderer = new THREE.WebGLRenderer({
         antialias: true,
+        canvas: canvas.current,
       });
-
       renderer.setSize(canvasWidth, canvasHeight);
-      cubeMount.current.appendChild( renderer.domElement );
 
-      const light = new THREE.HemisphereLight( 0xffffff, 0xaaaaaa, 1 );
-      scene.add( light );
+      // Overwrite THREE automatically setting these to static values of the
+      // canvas dimensions
+      canvas.current.style.width = "";
+      canvas.current.style.height = "";
 
-      const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-      const material = new THREE.MeshStandardMaterial( { color: 0xff6701 } );
-      const cube = new THREE.Mesh( geometry, material );
-      scene.add( cube );
+      const camera = new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5, 0, 1000 );
       camera.position.y = 2;
       camera.rotation.x = -Math.PI / 2;
 
-      const animate = function () {
-        requestAnimationFrame(animate);
-        cube.rotation.x += 0.005;
-        cube.rotation.z += 0.005;
+      const light = new THREE.HemisphereLight(0xffffff, 0x999999, 1);
+      scene.add(light);
+
+      // Maximum size of the cube for it to fit inside the canvas while rotating
+      const dim = 1 / Math.sqrt(3);
+      const geometry = new THREE.BoxGeometry(dim, dim, dim);
+      const material = new THREE.MeshStandardMaterial( { color: 0xff6701 } );
+      const cube = new THREE.Mesh( geometry, material );
+      scene.add(cube);
+
+      const animate = () => {
+        cube.rotation.x += 0.003;
+        cube.rotation.z += 0.003;
         renderer.render(scene, camera);
+
+        requestAnimationFrame(animate);
       };
 
       animate();
@@ -65,7 +73,9 @@ const Cube: React.FC<CubeProps> = (props) => {
   }, []);
 
   return (
-    <div className="overflow-hidden" ref={cubeMount}/>
+    <div className="overflow-hidden">
+      <canvas ref={canvas} className="block w-full" width={canvasWidth} height={canvasHeight} />
+    </div>
   );
 }
 
