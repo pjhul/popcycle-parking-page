@@ -1,13 +1,16 @@
 "use strict";
 
 const path = require("path");
+const glob = require("glob");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const PurgecssPlugin = require("purgecss-webpack-plugin")
 
 module.exports = function (env) {
   return {
     entry: path.resolve(__dirname, "./src/index.tsx"),
+    mode: env.production ? "production" : "development",
     module: {
       rules: [
         {
@@ -55,6 +58,11 @@ module.exports = function (env) {
       new MiniCssExtractPlugin({
         filename: "main.css",
       }),
+      ...(env.production ? [
+        new PurgecssPlugin({
+          paths: glob.sync("src/**/*", { nodir: true }),
+        })
+      ] : []),
     ],
     resolve: {
       extensions: [ ".tsx", ".ts", ".js" ],

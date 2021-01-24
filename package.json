@@ -8,9 +8,9 @@
   "private": true,
   "homepage": "www.popcycle.shop",
   "scripts": {
-    "build": "webpack --mode production",
-    "build:dev": "webpack --mode development",
-    "build:watch": "webpack -w --mode development"
+    "build": "webpack --env production --progress",
+    "build:dev": "webpack --env development --progress",
+    "build:watch": "webpack -w --env development"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -28,6 +28,7 @@
     "mini-css-extract-plugin": "^1.3.4",
     "postcss": "^8.2.4",
     "postcss-loader": "^4.2.0",
+    "purgecss-webpack-plugin": "^4.0.0",
     "sass": "^1.32.5",
     "sass-loader": "^10.1.1",
     "tailwindcss": "^2.0.2",
