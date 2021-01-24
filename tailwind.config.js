@@ -5,6 +5,9 @@ module.exports = {
     fontFamily: {
       "display": ["Rubik"],
     },
+    animation: {
+      spin: "spin 2s linear infinite",
+    },
     extend: {
       cursor: {
         grab: "grab",
@@ -13,6 +16,9 @@ module.exports = {
       colors: {
         purple: {
           DEFAULT: "#27187e",
+        },
+        orange: {
+          DEFAULT: "#ff6701",
         }
       }
     },

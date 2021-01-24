@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - yarn install --frozen-lockfile
+  build:
+    commands:
+      - yarn build
+artifacts:
+  files:
+    - dist/*
+cache:
+  paths:
+    - node_modules
