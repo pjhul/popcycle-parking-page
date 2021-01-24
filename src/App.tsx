@@ -15,7 +15,7 @@ const App: React.FC<unknown> = () => {
           canvasWidth={800}
           canvasHeight={800}
           dragSensitivity={0.0001}
-          baseRotation={0.0025}
+          baseRotation={0.002}
           momentumDecay={0.025}
         />
       </div>

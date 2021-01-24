@@ -3,7 +3,22 @@ module.exports = {
   darkMode: false,
   theme: {
     fontFamily: {
-      "display": ["Rubik"],
+      display: [
+        "Rubik",
+        'system-ui',
+        '-apple-system',
+        'blinkmacsystemfont',
+        '"segoe ui"',
+        'roboto',
+        '"helvetica neue"',
+        'Arial',
+        '"Noto Sans"',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+        '"Noto Color Emoji"',
+      ],
     },
     animation: {
       spin: "spin 2s linear infinite",

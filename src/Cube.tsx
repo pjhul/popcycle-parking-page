@@ -66,20 +66,16 @@ const Cube: React.FC<CubeProps> = (props) => {
       const cube = new THREE.Mesh( geometry, material );
       scene.add(cube);
 
+      let rotation = 0.0001;
       let isDragging = false;
       let dragVel = {
         dx: 0,
         dz: 0,
       };
 
-      canvas.current.onmousedown = () => {
-        isDragging = true;
-        setDragging(true);
-      }
-
       document.onmousemove = (event) => {
         if(isDragging) {
-          // event.movementX has only ~94% support, but is just so cool. Also this is
+          // event.movementX has only ~94% support, but it's just so cool. Also this is
           // just a cosmetic feature so support isn't too critical
 
           dragVel.dx += event.movementY * dragSensitivity;
@@ -87,17 +83,16 @@ const Cube: React.FC<CubeProps> = (props) => {
         }
       }
 
-      document.onmouseup = () => {
-        isDragging = false;
-        setDragging(false);
-      }
-
       const animate = () => {
+        // Interpolate rotation between it's starting value and baseRotation with
+        // logistic growth
+        rotation += 0.05 * rotation * (baseRotation - rotation) / baseRotation;
+
         const deltaRot = new THREE.Quaternion()
           .setFromEuler(new THREE.Euler(
-            baseRotation + dragVel.dx,
+            rotation + dragVel.dx,
             0,
-            baseRotation + -dragVel.dz,
+            rotation - dragVel.dz,
             "XYZ"
           ));
 
@@ -120,7 +115,23 @@ const Cube: React.FC<CubeProps> = (props) => {
         requestAnimationFrame(animate);
       };
 
-      animate();
+      renderer.render(scene, camera);
+
+      setTimeout(() => {
+        if(canvas.current) {
+          canvas.current.onmousedown = () => {
+            isDragging = true;
+            setDragging(true);
+          }
+
+          document.onmouseup = () => {
+            isDragging = false;
+            setDragging(false);
+          }
+
+          animate();
+        }
+      }, 1000);
     }
     else {
       console.error("No WEBGL");
@@ -128,7 +139,7 @@ const Cube: React.FC<CubeProps> = (props) => {
   }, []);
 
   return (
-    <div className={`overflow-hidden cursor-${dragging ? "grabbing" : "grab"}`}>
+    <div className={`overflow-hidden ${dragging ? "cursor-grabbing" : "cursor-grab"}`}>
       <canvas ref={canvas} className="block w-full" width={canvasWidth} height={canvasHeight} />
     </div>
   );
