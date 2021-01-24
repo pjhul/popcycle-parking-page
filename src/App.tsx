@@ -5,7 +5,7 @@ import Cube from "./Cube";
 
 const App: React.FC<unknown> = () => {
   return (
-    <div className="flex flex-col-reverse md:flex-row fixed inset-0 font-display">
+    <div className="flex flex-col md:flex-row fixed inset-0 font-display">
       <div className="flex items-center flex-grow z-10">
         <Info />
       </div>

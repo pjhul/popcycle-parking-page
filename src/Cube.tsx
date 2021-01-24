@@ -68,10 +68,29 @@ const Cube: React.FC<CubeProps> = (props) => {
 
       let rotation = 0.0001;
       let isDragging = false;
+      let lastPos = {
+        x: 0,
+        y: 0,
+      };
+
       let dragVel = {
         dx: 0,
         dz: 0,
       };
+
+      document.ontouchmove = (event) => {
+        if(isDragging && event.touches[0]) {
+          const touch = event.touches[0];
+
+          dragVel.dx += (touch.pageY - lastPos.y) * dragSensitivity;
+          dragVel.dz += (touch.pageX - lastPos.x) * dragSensitivity;
+
+          lastPos = {
+            x: touch.pageX,
+            y: touch.pageY,
+          }
+        }
+      }
 
       document.onmousemove = (event) => {
         if(isDragging) {
@@ -119,6 +138,26 @@ const Cube: React.FC<CubeProps> = (props) => {
 
       setTimeout(() => {
         if(canvas.current) {
+          document.ontouchstart = (event) => {
+            if(event.touches.length === 1) {
+              const touch = event.touches[0];
+
+              lastPos = {
+                x: touch.pageX,
+                y: touch.pageY,
+              }
+              isDragging = true;
+              setDragging(true);
+            }
+          }
+
+          document.ontouchend = (event) => {
+            if(event.touches.length === 0) {
+              isDragging = true;
+              setDragging(true);
+            }
+          }
+
           canvas.current.onmousedown = () => {
             isDragging = true;
             setDragging(true);

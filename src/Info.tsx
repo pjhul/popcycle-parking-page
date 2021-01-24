@@ -5,7 +5,7 @@ import Logo from "../public/logo.svg";
 
 const Info: React.FC<unknown> = () => {
   return (
-    <div className="h-full w-full flex flex-col items-start py-6 px-4 md:pl-8">
+    <div className="h-full w-full flex flex-col items-start py-2 md:py-6 px-4 md:pl-8">
       <img className="h-8 mb-auto" src={Logo} alt="Popcycle" />
 
       <div className="w-full space-y-6 md:-mt-8">
@@ -15,7 +15,7 @@ const Info: React.FC<unknown> = () => {
         <EmailBox />
       </div>
 
-      <div className="mt-36 md:mt-auto text-sm italic">
+      <div className="mt-8 md:mt-auto text-sm italic">
         © 2021 Popcycle, LLC
       </div>
     </div>
