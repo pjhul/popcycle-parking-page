@@ -1,3 +1,7 @@
+const env = require("process").env;
+
+console.log(env);
+
 module.exports = {
   plugins: [
     require("tailwindcss"),
