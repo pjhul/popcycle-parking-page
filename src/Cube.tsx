@@ -17,15 +17,24 @@ const isWebGLAvailable = () => {
 type CubeProps = {
   canvasWidth: number,
   canvasHeight: number,
+
+  baseRotation: number,
+  momentumDecay: number,
+  dragSensitivity: number,
 }
 
 const Cube: React.FC<CubeProps> = (props) => {
   const {
     canvasWidth,
     canvasHeight,
+
+    baseRotation,
+    momentumDecay,
+    dragSensitivity,
   } = props;
 
   const canvas = React.useRef<HTMLCanvasElement>(null);
+  const [dragging, setDragging] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if(isWebGLAvailable() && canvas.current) {
@@ -57,11 +66,57 @@ const Cube: React.FC<CubeProps> = (props) => {
       const cube = new THREE.Mesh( geometry, material );
       scene.add(cube);
 
-      const animate = () => {
-        cube.rotation.x += 0.003;
-        cube.rotation.z += 0.003;
-        renderer.render(scene, camera);
+      let isDragging = false;
+      let dragVel = {
+        dx: 0,
+        dz: 0,
+      };
 
+      canvas.current.onmousedown = () => {
+        isDragging = true;
+        setDragging(true);
+      }
+
+      document.onmousemove = (event) => {
+        if(isDragging) {
+          // event.movementX has only ~94% support, but is just so cool. Also this is
+          // just a cosmetic feature so support isn't too critical
+
+          dragVel.dx += event.movementY * dragSensitivity;
+          dragVel.dz += event.movementX * dragSensitivity;
+        }
+      }
+
+      document.onmouseup = () => {
+        isDragging = false;
+        setDragging(false);
+      }
+
+      const animate = () => {
+        const deltaRot = new THREE.Quaternion()
+          .setFromEuler(new THREE.Euler(
+            baseRotation + dragVel.dx,
+            0,
+            baseRotation + -dragVel.dz,
+            "XYZ"
+          ));
+
+        cube.quaternion.multiplyQuaternions(deltaRot, cube.quaternion);
+
+        if(Math.abs(dragVel.dx) < 0.00001) {
+          dragVel.dx = 0;
+        } else {
+          dragVel.dx -= momentumDecay * dragVel.dx;
+        }
+
+        if(Math.abs(dragVel.dz) < 0.00001) {
+          dragVel.dz = 0;
+        }
+        else {
+          dragVel.dz -= momentumDecay * dragVel.dz;
+        }
+
+        renderer.render(scene, camera);
         requestAnimationFrame(animate);
       };
 
@@ -73,7 +128,7 @@ const Cube: React.FC<CubeProps> = (props) => {
   }, []);
 
   return (
-    <div className="overflow-hidden">
+    <div className={`overflow-hidden cursor-${dragging ? "grabbing" : "grab"}`}>
       <canvas ref={canvas} className="block w-full" width={canvasWidth} height={canvasHeight} />
     </div>
   );

@@ -4,9 +4,12 @@ module.exports = {
   theme: {
     fontFamily: {
       "display": ["Rubik"],
-      "body": ["Rubik"],
     },
     extend: {
+      cursor: {
+        grab: "grab",
+        grabbing: "grabbing",
+      },
       colors: {
         purple: {
           DEFAULT: "#27187e",
