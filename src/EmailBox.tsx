@@ -32,19 +32,19 @@ const EmailBox: React.FC<unknown> = () => {
   }
 
   return (
-    <form className="h-12 relative flex items-center" onSubmit={onSubmit}>
-      <div className="h-12 mr-2 flex items-center px-2 space-x-2 border-2 border-purple text-purple rounded-md">
-        <FiMail className="w-6 h-6" />
-        <input onChange={event => setEmail(event.target.value)} className="w-64" placeholder="Enter your email" />
+    <form className="h-10 w-full md:w-auto md:h-12 relative flex items-center" onSubmit={onSubmit}>
+      <div className="h-full mr-2 flex items-center px-2 space-x-2 border-2 border-purple text-purple rounded-md">
+        <FiMail className="w-5 h-5 md:w-6 md:h-6" />
+        <input className="w-48 md:w-64" onChange={event => setEmail(event.target.value)} placeholder="Enter your email" />
       </div>
 
-      <button type="submit" className="h-12 px-6 bg-purple text-white rounded-md">
+      <button type="submit" className="h-full px-6 bg-purple text-white rounded-md">
         Join
       </button>
 
       { isLoading ? <div className="ml-4 bg-orange w-6 h-6 animate-spin duration-500" /> : null }
 
-      { message ? <div className="ml-4 text-purple italic">{ message }</div> : null }
+      { message ? <div className="absolute top-full mt-2 md:mt-0 md:top-0 md:relative md:ml-4 text-purple italic">{ message }</div> : null }
     </form>
   );
 }
