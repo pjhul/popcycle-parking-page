@@ -9,7 +9,7 @@ phases:
       - yarn build
   post_build:
     commands:
-    - aws s3 rm s3://popcycle-parking-page -r
+    - aws s3 rm s3://popcycle-parking-page --recursive
 artifacts:
   base-directory: dist
   files:
