@@ -5,7 +5,6 @@ const glob = require("glob");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const PurgecssPlugin = require("purgecss-webpack-plugin")
 
 module.exports = function (env) {
   return {
@@ -58,11 +57,6 @@ module.exports = function (env) {
       new MiniCssExtractPlugin({
         filename: "main.css",
       }),
-      ...(env.production ? [
-        new PurgecssPlugin({
-          paths: glob.sync("src/**/*", { nodir: true }),
-        })
-      ] : []),
     ],
     resolve: {
       extensions: [ ".tsx", ".ts", ".js" ],
