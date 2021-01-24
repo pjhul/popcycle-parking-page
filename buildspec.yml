@@ -7,9 +7,13 @@ phases:
   build:
     commands:
       - yarn build
+  post_build:
+    commands:
+    - aws s3 rm s3://popcycle-parking-page -r
 artifacts:
+  base-directory: dist
   files:
-    - dist/*
+    - '**/*'
 cache:
   paths:
     - node_modules
