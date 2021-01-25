@@ -84,7 +84,7 @@ const Cube: React.FC<CubeProps> = (props) => {
           dz: 0,
         };
 
-        canvas.current.ontouchstart = (event) => {
+        document.ontouchstart = (event) => {
           if(event.touches.length === 1) {
             const touch = event.touches[0];
 
@@ -92,14 +92,11 @@ const Cube: React.FC<CubeProps> = (props) => {
               x: touch.pageX,
               y: touch.pageY,
             };
-
-            isDragging = true;
-            setDragging(true);
           }
         }
 
         document.ontouchmove = (event) => {
-          if(isDragging && event.touches[0]) {
+          if(event.touches[0]) {
             const touch = event.touches[0];
             dragVel.dx += (touch.pageY - lastPos.y) * dragSensitivity;
             dragVel.dz += (touch.pageX - lastPos.x) * dragSensitivity;
@@ -108,13 +105,6 @@ const Cube: React.FC<CubeProps> = (props) => {
               x: touch.pageX,
               y: touch.pageY,
             };
-          }
-        }
-
-        document.ontouchend = (event) => {
-          if(event.touches.length === 0) {
-            isDragging = false;
-            setDragging(false);
           }
         }
 
