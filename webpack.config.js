@@ -24,6 +24,10 @@ module.exports = function (env) {
         "...",
         new CssMinimizerPlugin(),
       ],
+      splitChunks: {
+        chunks: "all",
+        name: false,
+      },
     },
     resolve: {
       extensions: [ ".tsx", ".ts", ".js" ],
