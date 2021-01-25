@@ -5,9 +5,10 @@ const glob = require("glob");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+//const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 module.exports = function (env) {
   return {
@@ -19,6 +20,10 @@ module.exports = function (env) {
     optimization: {
       runtimeChunk: "single",
       minimize: env.production,
+      minimizer: [
+        "...",
+        new CssMinimizerPlugin(),
+      ],
     },
     resolve: {
       extensions: [ ".tsx", ".ts", ".js" ],
