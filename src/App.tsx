@@ -1,7 +1,7 @@
 import React from "react";
 
 import Info from "./Info";
-import Cube from "./Cube";
+const Cube = React.lazy(() => import("./Cube"));
 
 const App: React.FC<unknown> = () => {
   return (
@@ -11,13 +11,15 @@ const App: React.FC<unknown> = () => {
       </div>
 
       <div className="w-full fixed top-0 mt-8 md:mt-0 md:relative md:w-1/2 flex items-center justify-center flex-shrink-0">
-        <Cube
-          canvasWidth={800}
-          canvasHeight={800}
-          dragSensitivity={0.0001}
-          baseRotation={0.002}
-          momentumDecay={0.025}
-        />
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <Cube
+            canvasWidth={800}
+            canvasHeight={800}
+            dragSensitivity={0.0001}
+            baseRotation={0.002}
+            momentumDecay={0.025}
+          />
+        </React.Suspense>
       </div>
 
     </div>
