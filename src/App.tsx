@@ -11,7 +11,7 @@ const App: React.FC<unknown> = () => {
       <div className="h-full w-full relative flex flex-col md:flex-row">
         <img className="h-8 absolute top-0 left-0 z-50" src={Logo} alt="Popcycle" />
 
-        <div className="mt-auto md:my-auto">
+        <div className="mt-auto md:my-auto z-40">
           <Info />
         </div>
 
@@ -25,7 +25,7 @@ const App: React.FC<unknown> = () => {
           />
         </div>
 
-        <div className="absolute left-0 bottom-0">
+        <div className="absolute left-0 bottom-0 z-50">
           © 2021 Popcycle, LLC
         </div>
       </div>
