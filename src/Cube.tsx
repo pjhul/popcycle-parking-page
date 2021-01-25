@@ -1,4 +1,5 @@
 import React from "react";
+import Placeholder from "../public/placeholder.png";
 
 const isWebGLAvailable = () => {
   try {
@@ -34,9 +35,10 @@ const Cube: React.FC<CubeProps> = (props) => {
 
   const canvas = React.useRef<HTMLCanvasElement>(null);
   const [dragging, setDragging] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
-    import("three").then(({ default: THREE }) => {
+    import("three").then((THREE) => {
       if(isWebGLAvailable() && canvas.current) {
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0xffffff);
@@ -65,6 +67,9 @@ const Cube: React.FC<CubeProps> = (props) => {
         const material = new THREE.MeshStandardMaterial( { color: 0xff6701 } );
         const cube = new THREE.Mesh( geometry, material );
         scene.add(cube);
+
+        renderer.render(scene, camera);
+        setIsLoading(false);
 
         let rotation = 0.0001;
         let isDragging = false;
@@ -134,8 +139,6 @@ const Cube: React.FC<CubeProps> = (props) => {
           requestAnimationFrame(animate);
         };
 
-        renderer.render(scene, camera);
-
         setTimeout(() => {
           if(canvas.current) {
             document.ontouchstart = (event) => {
@@ -170,7 +173,7 @@ const Cube: React.FC<CubeProps> = (props) => {
 
             animate();
           }
-        }, 1000);
+        }, 1500);
       }
       else {
         console.error("No WEBGL");
@@ -179,7 +182,8 @@ const Cube: React.FC<CubeProps> = (props) => {
   }, []);
 
   return (
-    <div className={`overflow-hidden ${dragging ? "cursor-grabbing" : "cursor-grab"}`}>
+    <div className={`relative overflow-hidden ${dragging ? "cursor-grabbing" : "cursor-grab"}`}>
+      { isLoading ? <img className="absolute w-full" src={Placeholder} /> : null }
       <canvas ref={canvas} className="block w-full" width={canvasWidth} height={canvasHeight} />
     </div>
   );

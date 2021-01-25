@@ -18,6 +18,7 @@ module.exports = function (env) {
     devtool: !env.production && "inline-source-map",
     optimization: {
       runtimeChunk: "single",
+      minimize: env.production,
     },
     resolve: {
       extensions: [ ".tsx", ".ts", ".js" ],
@@ -85,7 +86,9 @@ module.exports = function (env) {
       ],
     },
     plugins: [
-      new CleanWebpackPlugin(),
+      new CleanWebpackPlugin({
+        cleanStaleWebpackAssets: false,
+      }),
       new HtmlWebpackPlugin({
         inject: true,
         template: path.resolve(__dirname, "public/index.html"),
