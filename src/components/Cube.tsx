@@ -25,7 +25,76 @@ const Cube: React.FC<CubeProps> = (props) => {
   const [dragging, setDragging] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
+  const rotation = React.useRef<number>(0.00001);
+  const isDragging = React.useRef<boolean>(dragging);
+
+  const lastPos = React.useRef({
+    x: 0,
+    y: 0,
+  });
+
+  const dragVel = React.useRef({
+    dx: 0,
+    dz: 0,
+  });
+
+  // Arguably simpler/more performant to include these in the effect hook, but
+  // I believe this is much easier to follow, declaring them here and only attatching
+  // them in the effect hook
+  const onTouchStart = (event: TouchEvent) => {
+    if(event.touches.length === 1) {
+      const touch = event.touches[0];
+
+      lastPos.current = {
+        x: touch.pageX,
+        y: touch.pageY,
+      };
+    }
+  }
+
+  const onTouchMove = (event: TouchEvent) => {
+    if(event.touches[0]) {
+      const touch = event.touches[0];
+
+      const { x, y } = lastPos.current;
+      const { dx, dz } = dragVel.current;
+
+      dragVel.current = {
+        dx: dx + (touch.pageY - y) * dragSensitivity,
+        dz: dz + (touch.pageX - x) * dragSensitivity,
+      }
+
+      lastPos.current = {
+        x: touch.pageX,
+        y: touch.pageY,
+      };
+    }
+  }
+
+  const onMouseDown = () => {
+    isDragging.current = true;
+    setDragging(true);
+  }
+
+  const onMouseMove = (event: MouseEvent) => {
+    if(isDragging.current) {
+      const { movementX, movementY } = event;
+      const { dx, dz } = dragVel.current;
+
+      dragVel.current = {
+        dx: dx + movementY * dragSensitivity,
+        dz: dz + movementX * dragSensitivity,
+      }
+    }
+  }
+
+  const onMouseUp = () => {
+    isDragging.current = false;
+    setDragging(false);
+  }
+
   React.useEffect(() => {
+    // Allow webpack to split three into its own chunk and load it dynamically
     import("three").then(THREE => {
       if(isWebGLAvailable() && canvas.current) {
         const scene = new THREE.Scene();
@@ -42,6 +111,7 @@ const Cube: React.FC<CubeProps> = (props) => {
         canvas.current.style.width = "";
         canvas.current.style.height = "";
 
+        // Position the camera directly above the cube, looking downwards
         const camera = new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5, 0, 4);
         camera.position.y = 1;
         camera.rotation.x = -Math.PI / 2;
@@ -59,66 +129,22 @@ const Cube: React.FC<CubeProps> = (props) => {
         renderer.render(scene, camera);
         setIsLoading(false);
 
-        let rotation = 0.00001;
-        let isDragging = false;
+        document.ontouchstart = onTouchStart;
+        canvas.current.ontouchmove = onTouchMove;
 
-        let lastPos = {
-          x: 0,
-          y: 0,
-        };
-
-        let dragVel = {
-          dx: 0,
-          dz: 0,
-        };
-
-        document.ontouchstart = (event) => {
-          if(event.touches.length === 1) {
-            const touch = event.touches[0];
-
-            lastPos = {
-              x: touch.pageX,
-              y: touch.pageY,
-            };
-          }
-        }
-
-        document.ontouchmove = (event) => {
-          if(event.touches[0]) {
-            const touch = event.touches[0];
-            dragVel.dx += (touch.pageY - lastPos.y) * dragSensitivity;
-            dragVel.dz += (touch.pageX - lastPos.x) * dragSensitivity;
-
-            lastPos = {
-              x: touch.pageX,
-              y: touch.pageY,
-            };
-          }
-        }
-
-        canvas.current.onmousedown = () => {
-          isDragging = true;
-          setDragging(true);
-        }
-
-        document.onmousemove = (event) => {
-          if(isDragging) {
-            dragVel.dx += event.movementY * dragSensitivity;
-            dragVel.dz += event.movementX * dragSensitivity;
-          }
-        }
-
-        document.onmouseup = () => {
-          isDragging = false;
-          setDragging(false);
-        }
+        canvas.current.onmousedown = onMouseDown;
+        document.onmousemove = onMouseMove;
+        document.onmouseup = onMouseUp;
 
         const animate = () => {
           // Over-optimization :P
-          const x = rotation + dragVel.dx;
-          const z = rotation - dragVel.dz;
+          const { dx, dz } = dragVel.current;
+          const rot = rotation.current;
 
-          // Altered these equations to omit c2 & s2, as they would be always 0 & 1
+          const x = rot + dx;
+          const z = rot - dz;
+
+          // Altered these equations to omit c2 & s2, as they would be always 0 & 1 respectively
           // Use small angle approximation for sin & cos
           const c1 = 1 - (x ** 2) / 8;
           const c3 = 1 - (z ** 2) / 8;
@@ -137,11 +163,13 @@ const Cube: React.FC<CubeProps> = (props) => {
 
           // Interpolate rotation between its starting value and baseRotation with
           // logistic growth
-          rotation += 0.05 * (rotation - (rotation ** 2 / baseRotation));
+          rotation.current = rot + 0.05 * (rot - (rot ** 2 / baseRotation));
 
           // Don't think numerical stability is actually too big of an issue
-          dragVel.dx -= momentumDecay * dragVel.dx;
-          dragVel.dz -= momentumDecay * dragVel.dz;
+          dragVel.current = {
+            dx: dx - momentumDecay * dx,
+            dz: dz - momentumDecay * dz,
+          }
 
           renderer.render(scene, camera);
           requestAnimationFrame(animate);
@@ -170,11 +198,10 @@ const isWebGLAvailable = () => {
     const canvas = document.createElement("canvas");
 
     return !! (window.WebGLRenderingContext &&
-      (canvas.getContext("webgl") || canvas.getContext( "experimental-webgl" ))
+      (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
     );
   }
   catch {
     return false;
   }
 }
-
