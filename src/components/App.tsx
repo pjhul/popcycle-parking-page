@@ -3,7 +3,7 @@ import React from "react";
 import Info from "./Info";
 import Cube from "./Cube";
 
-import Logo from "../public/logo.svg";
+import Logo from "../assets/logo.svg";
 
 const App: React.FC<unknown> = () => {
   return (

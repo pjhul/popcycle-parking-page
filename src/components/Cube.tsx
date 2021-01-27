@@ -1,18 +1,5 @@
 import React from "react";
-import Placeholder from "../public/placeholder.png";
-
-const isWebGLAvailable = () => {
-  try {
-    const canvas = document.createElement("canvas");
-
-    return !! (window.WebGLRenderingContext &&
-      (canvas.getContext("webgl") || canvas.getContext( "experimental-webgl" ))
-    );
-  }
-  catch {
-    return false;
-  }
-}
+import Placeholder from "../assets/placeholder.png";
 
 type CubeProps = {
   canvasWidth: number
@@ -79,6 +66,7 @@ const Cube: React.FC<CubeProps> = (props) => {
           x: 0,
           y: 0,
         };
+
         let dragVel = {
           dx: 0,
           dz: 0,
@@ -147,7 +135,7 @@ const Cube: React.FC<CubeProps> = (props) => {
 
           cube.quaternion.multiplyQuaternions(deltaRot, cube.quaternion);
 
-          // Interpolate rotation between it's starting value and baseRotation with
+          // Interpolate rotation between its starting value and baseRotation with
           // logistic growth
           rotation += 0.05 * (rotation - (rotation ** 2 / baseRotation));
 
@@ -176,3 +164,17 @@ const Cube: React.FC<CubeProps> = (props) => {
 }
 
 export default Cube;
+
+const isWebGLAvailable = () => {
+  try {
+    const canvas = document.createElement("canvas");
+
+    return !! (window.WebGLRenderingContext &&
+      (canvas.getContext("webgl") || canvas.getContext( "experimental-webgl" ))
+    );
+  }
+  catch {
+    return false;
+  }
+}
+
