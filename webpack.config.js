@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 //const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 module.exports = function (env) {
@@ -49,7 +50,7 @@ module.exports = function (env) {
             {
               loader: "file-loader",
               options: {
-                name: "images/[hash]-[name].[ext]",
+                name: "static/images/[hash]-[name].[ext]",
               },
             },
           ],
@@ -101,7 +102,15 @@ module.exports = function (env) {
       new HtmlWebpackPlugin({
         inject: true,
         template: path.resolve(__dirname, "public/index.html"),
-        favicon: path.resolve(__dirname, "public/favicon.png"),
+        templateParameters: {
+          root: env.production ? "https://popcycle.shop" : ""
+        }
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: "public/images", to: "static/images" },
+          { from: "public/robots.txt" },
+        ]
       }),
       new MiniCssExtractPlugin({
         filename: "static/styles/[name].css",
