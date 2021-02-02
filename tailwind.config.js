@@ -39,9 +39,7 @@ module.exports = {
     },
   },
   variants: {
-    extend: {
-      borderWidth: ["focus-within"]
-    },
+    extend: {},
   },
   plugins: [],
 }
