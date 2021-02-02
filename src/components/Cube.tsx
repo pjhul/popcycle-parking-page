@@ -72,6 +72,7 @@ const Cube: React.FC<CubeProps> = (props) => {
   }
 
   const onMouseDown = () => {
+    console.log("mouse down");
     isDragging.current = true;
     setDragging(true);
   }
@@ -89,9 +90,13 @@ const Cube: React.FC<CubeProps> = (props) => {
   }
 
   const onMouseUp = () => {
-    isDragging.current = false;
-    setDragging(false);
+    if(isDragging.current) {
+      isDragging.current = false;
+      setDragging(false);
+    }
   }
+
+  console.log("render");
 
   React.useEffect(() => {
     // Allow webpack to split three into its own chunk and load it dynamically
