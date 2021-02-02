@@ -7,7 +7,7 @@ import Logo from "../assets/logo.svg";
 
 const App: React.FC<unknown> = () => {
   return (
-    <div className="p-4 md:p-8 fixed inset-0 font-display">
+    <div className="p-4 md:p-8 fixed inset-0 font-display select-none">
       <div className="h-full w-full relative flex flex-col md:flex-row">
         <img className="h-8 absolute top-0 left-0 z-50" src={Logo} alt="Popcycle" />
 
