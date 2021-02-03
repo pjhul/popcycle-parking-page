@@ -33,11 +33,24 @@ const EmailBox: React.FC<unknown> = () => {
       setMessage("Please enter a valid email.");
     }
 
-    setTimeout(() => {
-      setMessage("");
-    }, 2000);
     setIsLoading(false);
   }
+
+  React.useEffect(() => {
+    let isMounted = true;
+
+    if(message !== "") {
+      setTimeout(() => {
+        if(isMounted) {
+          setMessage("");
+        }
+      }, 2000);
+    }
+
+    return () => {
+      isMounted = false;
+    }
+  }, [message]);
 
   return (
     <form className="h-10 w-full md:w-auto md:h-12 relative flex items-center" onSubmit={onSubmit}>

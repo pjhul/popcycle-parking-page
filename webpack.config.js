@@ -103,7 +103,7 @@ module.exports = function (env) {
         inject: true,
         template: path.resolve(__dirname, "public/index.html"),
         templateParameters: {
-          root: env.production ? "https://popcycle.shop" : ""
+          root: env.production ? "https://www.popcycle.shop" : ""
         }
       }),
       new CopyWebpackPlugin({
