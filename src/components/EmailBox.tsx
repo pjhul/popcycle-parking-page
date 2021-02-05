@@ -56,7 +56,13 @@ const EmailBox: React.FC<unknown> = () => {
     <form className="h-10 w-full md:w-auto md:h-12 relative flex items-center" onSubmit={onSubmit}>
       <div className="group h-full mr-2 flex items-center px-2 space-x-2 border-2 border-purple bg-white rounded-md text-gray-400 focus-within:text-purple">
         <FiMail className="w-5 h-5 md:w-6 md:h-6" />
-        <input className="w-48 md:w-64 outline-none text-purple" onChange={event => setEmail(event.target.value)} placeholder="Enter your email" />
+        <input type="email"
+          autoComplete="email"
+          autoCapitalize="off"
+          className="w-48 md:w-64 outline-none text-purple"
+          placeholder="Enter your email"
+          onChange={event => setEmail(event.target.value)}
+        />
       </div>
 
       <button type="submit" className="h-full px-6 bg-purple text-white rounded-md focus:outline-none focus:ring-4 focus:ring-opacity-60 focus:ring-purple">
