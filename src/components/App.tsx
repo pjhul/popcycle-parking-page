@@ -19,7 +19,7 @@ const App: React.FC<unknown> = () => {
           <Cube
             canvasWidth={900}
             canvasHeight={900}
-            dragSensitivity={0.00006}
+            dragSensitivity={0.00005}
             baseRotation={0.002}
             momentumDecay={0.025}
           />
