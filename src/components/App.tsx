@@ -24,10 +24,6 @@ const App: React.FC<unknown> = () => {
             momentumDecay={0.025}
           />
         </div>
-
-        <div className="absolute left-0 bottom-0 z-50">
-          © 2021 Popcycle, LLC
-        </div>
       </div>
     </div>
   );
